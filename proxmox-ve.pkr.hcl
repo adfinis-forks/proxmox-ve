@@ -112,7 +112,7 @@ source "qemu" "proxmox-ve-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
   ]
   shutdown_command = "poweroff"
 }
@@ -150,7 +150,7 @@ source "qemu" "proxmox-ve-uefi-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
   ]
   shutdown_command = "poweroff"
 }
@@ -212,7 +212,7 @@ source "proxmox-iso" "proxmox-ve-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
     # wait for the installation to finish.
     "<wait4m>",
     # login.
@@ -285,7 +285,7 @@ source "proxmox-iso" "proxmox-ve-uefi-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
     # wait for the installation to finish.
     "<wait4m>",
     # login.
