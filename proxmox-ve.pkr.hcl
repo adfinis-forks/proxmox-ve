@@ -2,7 +2,7 @@ packer {
   required_plugins {
     # see https://github.com/hashicorp/packer-plugin-qemu
     qemu = {
-      version = "1.1.0"
+      version = "1.1.1"
       source  = "github.com/hashicorp/qemu"
     }
     # see https://github.com/hashicorp/packer-plugin-proxmox
@@ -112,7 +112,7 @@ source "qemu" "proxmox-ve-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
   ]
   shutdown_command = "poweroff"
 }
@@ -150,7 +150,7 @@ source "qemu" "proxmox-ve-uefi-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
   ]
   shutdown_command = "poweroff"
 }
@@ -182,12 +182,18 @@ source "proxmox-iso" "proxmox-ve-amd64" {
     discard      = true
     disk_size    = "${var.disk_size}M"
     storage_pool = "local-lvm"
+    format       = "raw"
   }
-  iso_storage_pool = "local"
-  iso_url          = var.iso_url
-  iso_checksum     = var.iso_checksum
-  unmount_iso      = true
+  boot_iso {
+    type             = "scsi"
+    iso_storage_pool = "local"
+    iso_url          = var.iso_url
+    iso_checksum     = var.iso_checksum
+    iso_download_pve = true
+    unmount          = true
+  }
   additional_iso_files {
+    type             = "scsi"
     cd_label         = "proxmox-ais"
     cd_files         = ["answer.toml"]
     unmount          = true
@@ -206,7 +212,7 @@ source "proxmox-iso" "proxmox-ve-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
     # wait for the installation to finish.
     "<wait4m>",
     # login.
@@ -249,12 +255,18 @@ source "proxmox-iso" "proxmox-ve-uefi-amd64" {
     discard      = true
     disk_size    = "${var.disk_size}M"
     storage_pool = "local-lvm"
+    format       = "raw"
   }
-  iso_storage_pool = "local"
-  iso_url          = var.iso_url
-  iso_checksum     = var.iso_checksum
-  unmount_iso      = true
+  boot_iso {
+    type             = "scsi"
+    iso_storage_pool = "local"
+    iso_url          = var.iso_url
+    iso_checksum     = var.iso_checksum
+    iso_download_pve = true
+    unmount          = true
+  }
   additional_iso_files {
+    type             = "scsi"
     iso_storage_pool = "local"
     cd_label         = "proxmox-ais"
     cd_files         = ["answer.toml"]
@@ -273,7 +285,7 @@ source "proxmox-iso" "proxmox-ve-uefi-amd64" {
     # wait for the shell prompt.
     "<wait1m>",
     # do the installation.
-    "proxmox-fetch-answer partition >/run/automatic-installer-answers<enter><wait>exit<enter>",
+    "proxmox-fetch-answer partition proxmox-ais >/run/automatic-installer-answers<enter><wait>exit<enter>",
     # wait for the installation to finish.
     "<wait4m>",
     # login.
