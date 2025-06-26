@@ -50,6 +50,9 @@ jobs:
         with:
           version: latest
 
+      - name: Make sure to remove old packer cache
+        run: sudo rm -fr /root/.cache/packer
+
       - name: Packer init
         run: packer init ./proxmox-ve.pkr.hcl
 
