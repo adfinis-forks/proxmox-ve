@@ -39,7 +39,7 @@ variable "disk_size" {
 
 variable "iso_url" {
   type    = string
-  default = "http://download.proxmox.com/iso/proxmox-ve_8.2-2.iso"
+  default = "http://download.proxmox.com/iso/proxmox-ve_8.3-1.iso"
 }
 
 variable "iso_checksum" {
