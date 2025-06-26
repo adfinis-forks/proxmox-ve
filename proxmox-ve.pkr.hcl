@@ -44,7 +44,7 @@ variable "iso_url" {
 
 variable "iso_checksum" {
   type    = string
-  default = "sha256:c96ad84eacbbcef299ab8f407f9602f832abb5ceb08a9aa288c1e1164df2da97"
+  default = "sha256:b5c2d10d6492d2d763e648bc8562d0f77a90c39fac3a664e676e795735198b45"
 }
 
 variable "proxmox_node" {
