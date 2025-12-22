@@ -6,22 +6,26 @@ export DEBIAN_FRONTEND=noninteractive
 
 # switch to the non-enterprise repository.
 # see https://pve.proxmox.com/wiki/Package_Repositories
-dpkg-divert --divert /etc/apt/sources.list.d/pve-enterprise.list.distrib.disabled --rename --add /etc/apt/sources.list.d/pve-enterprise.list
-dpkg-divert --divert /etc/apt/sources.list.d/ceph.list.distrib.disabled --rename --add /etc/apt/sources.list.d/ceph.list
-echo "deb http://download.proxmox.com/debian/pve $(. /etc/os-release && echo "$VERSION_CODENAME") pve-no-subscription" >/etc/apt/sources.list.d/pve.list
-echo "deb http://download.proxmox.com/debian/ceph-reef $(. /etc/os-release && echo "$VERSION_CODENAME") no-subscription" >/etc/apt/sources.list.d/ceph.list
+dpkg-divert --divert /etc/apt/sources.list.d/pve-enterprise.sources.distrib.disabled --rename --add /etc/apt/sources.list.d/pve-enterprise.sources
+dpkg-divert --divert /etc/apt/sources.list.d/ceph.sources.distrib.disabled --rename --add /etc/apt/sources.list.d/ceph.sources
+cat >/etc/apt/sources.list.d/pve.sources <<EOF
+Types: deb
+URIs: http://download.proxmox.com/debian/pve
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: pve-no-subscription
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+EOF
+cat >/etc/apt/sources.list.d/ceph.sources <<EOF
+Types: deb
+URIs: http://download.proxmox.com/debian/ceph-squid
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: no-subscription
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+EOF
 
 # switch the apt mirror to adfinis
-cat >/etc/apt/sources.list <<'EOF'
-deb http://pkg.adfinis-on-exoscale.ch/debian/ bookworm main non-free non-free-firmware contrib
-deb-src http://pkg.adfinis-on-exoscale.ch/debian/ bookworm main non-free non-free-firmware contrib
-
-deb http://security.debian.org/ bookworm-security main
-deb-src http://security.debian.org/ bookworm-security main
-
-deb http://pkg.adfinis-on-exoscale.ch/debian/ bookworm-updates main contrib non-free non-free-firmware
-deb-src http://pkg.adfinis-on-exoscale.ch/debian/ bookworm-updates main contrib non-free non-free-firmware
-EOF
+sed -i -E 's,deb\.debian\.org,pkg.adfinis-on-exoscale.ch\/debian,' /etc/apt/sources.list.d/debian.sources
 
 # update only (no upgrade since we want to use this image to test automated cluster upgrades)
 apt-get update
+apt-get dist-upgrade -y

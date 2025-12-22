@@ -2,17 +2,17 @@ packer {
   required_plugins {
     # see https://github.com/hashicorp/packer-plugin-qemu
     qemu = {
-      version = "1.1.1"
+      version = "1.1.4"
       source  = "github.com/hashicorp/qemu"
     }
     # see https://github.com/hashicorp/packer-plugin-proxmox
     proxmox = {
-      version = "1.2.0"
+      version = "1.2.3"
       source  = "github.com/hashicorp/proxmox"
     }
     # see https://github.com/hashicorp/packer-plugin-vagrant
     vagrant = {
-      version = "1.1.5"
+      version = "1.1.6"
       source  = "github.com/hashicorp/vagrant"
     }
   }
@@ -39,12 +39,12 @@ variable "disk_size" {
 
 variable "iso_url" {
   type    = string
-  default = "http://download.proxmox.com/iso/proxmox-ve_8.3-1.iso"
+  default = "http://download.proxmox.com/iso/proxmox-ve_9.1-1.iso"
 }
 
 variable "iso_checksum" {
   type    = string
-  default = "sha256:b5c2d10d6492d2d763e648bc8562d0f77a90c39fac3a664e676e795735198b45"
+  default = "sha256:6d8f5afc78c0c66812d7272cde7c8b98be7eb54401ceb045400db05eb5ae6d22"
 }
 
 variable "proxmox_node" {
@@ -99,7 +99,7 @@ source "qemu" "proxmox-ve-amd64" {
   iso_checksum        = var.iso_checksum
   output_directory    = "${var.output_base_dir}/output-{{build_name}}"
   ssh_username        = "root"
-  ssh_password        = "vagrant"
+  ssh_password        = "password"
   ssh_timeout         = "60m"
   cd_label            = "proxmox-ais"
   cd_files            = ["answer.toml"]
@@ -137,7 +137,7 @@ source "qemu" "proxmox-ve-uefi-amd64" {
   iso_url             = var.iso_url
   iso_checksum        = var.iso_checksum
   ssh_username        = "root"
-  ssh_password        = "vagrant"
+  ssh_password        = "password"
   ssh_timeout         = "60m"
   cd_label            = "proxmox-ais"
   cd_files            = ["answer.toml"]
@@ -201,7 +201,7 @@ source "proxmox-iso" "proxmox-ve-amd64" {
   }
   os           = "l26"
   ssh_username = "root"
-  ssh_password = "vagrant"
+  ssh_password = "password"
   ssh_timeout  = "60m"
   boot_wait    = "30s"
   boot_command = [
@@ -216,9 +216,9 @@ source "proxmox-iso" "proxmox-ve-amd64" {
     # wait for the installation to finish.
     "<wait4m>",
     # login.
-    "root<enter><wait5s>vagrant<enter><wait5s>",
+    "root<enter><wait5s>password<enter><wait5s>",
     # install the guest agent.
-    "rm -f /etc/apt/sources.list.d/{pve-enterprise,ceph}.list<enter>",
+    "rm -f /etc/apt/sources.list.d/{pve-enterprise,ceph}.sources<enter>",
     "apt-get update<enter><wait1m>",
     "apt-get install -y qemu-guest-agent<enter><wait30s>",
     "systemctl start qemu-guest-agent<enter><wait>",
@@ -274,7 +274,7 @@ source "proxmox-iso" "proxmox-ve-uefi-amd64" {
   }
   os           = "l26"
   ssh_username = "root"
-  ssh_password = "vagrant"
+  ssh_password = "password"
   ssh_timeout  = "60m"
   boot_wait    = "30s"
   boot_command = [
@@ -289,9 +289,9 @@ source "proxmox-iso" "proxmox-ve-uefi-amd64" {
     # wait for the installation to finish.
     "<wait4m>",
     # login.
-    "root<enter><wait5s>vagrant<enter><wait5s>",
+    "root<enter><wait5s>password<enter><wait5s>",
     # install the guest agent.
-    "rm -f /etc/apt/sources.list.d/{pve-enterprise,ceph}.list<enter>",
+    "rm -f /etc/apt/sources.list.d/{pve-enterprise,ceph}.sources<enter>",
     "apt-get update<enter><wait1m>",
     "apt-get install -y qemu-guest-agent<enter><wait30s>",
     "systemctl start qemu-guest-agent<enter><wait>",

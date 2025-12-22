@@ -8,12 +8,12 @@ Create the base box as described in the section corresponding to your provider.
 
 If you want to troubleshoot the packer execution see the `.log` file that is created in the current directory.
 
-After the example vagrant environment is started, you can access the [Proxmox Web Interface](https://10.10.10.2:8006/) with the default `root` user and password `vagrant`.
+After the example vagrant environment is started, you can access the [Proxmox Web Interface](https://10.10.10.2:8006/) with the default `root` user and password `password`.
 
 For a cluster example see [rgl/proxmox-ve-cluster-vagrant](https://github.com/rgl/proxmox-ve-cluster-vagrant).
 
 ## About this fork
-This fork contains various changes with the goal to create a box that can be used to test proxmox upgrade scenarios.  
+
 The following notable changes have been implemented:
 - Dropped support for Hyper-V and VirtualBox
 - Changed locales to Switzerland (de_CH)
