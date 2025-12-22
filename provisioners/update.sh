@@ -24,7 +24,7 @@ Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
 EOF
 
 # switch the apt mirror to adfinis
-sed -i -E 's,deb\.debian\.org,pkg.adfinis-on-exoscale.ch\/debian,' /etc/apt/sources.list.d/debian.sources
+sed -i -E 's,deb\.debian\.org,pkg.adfinis-on-exoscale.ch,' /etc/apt/sources.list.d/debian.sources
 
 # update only (no upgrade since we want to use this image to test automated cluster upgrades)
 apt-get update
